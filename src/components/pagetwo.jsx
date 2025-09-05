@@ -1,4 +1,55 @@
+import { motion } from "motion/react";
+import { useEffect } from "react";
 export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
+  useEffect(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const newErrors = {};
+    if (emailRegex.test(from.email)) {
+      newErrors.email = null;
+    } else {
+      newErrors.email = "Wrong email";
+    }
+
+    setErrors({ ...errors, ...newErrors });
+  }, [from.email]);
+  useEffect(() => {
+    const mnNumberRegex = /^(?:\+976|976)?\s?[689]\d{7}$/;
+    const newErrors = {};
+
+    if (mnNumberRegex.test(from.phone)) {
+      newErrors.phone = null;
+    } else {
+      newErrors.phone = "Wrong phone";
+    }
+
+    setErrors({ ...errors, ...newErrors });
+  }, [from.phone]);
+  useEffect(() => {
+    const newErrors = {};
+
+    const passwordRegex = /^[A-Za-z\d]{8,}$/;
+
+    if (passwordRegex.test(from.password)) {
+      newErrors.password = null;
+    } else {
+      newErrors.password = "wrong password";
+    }
+
+    setErrors({ ...errors, ...newErrors });
+  }, [from.password]);
+  useEffect(() => {
+    const newErrors = {};
+
+    const passwordRegex = /^[A-Za-z\d]{8,}$/;
+
+    if (passwordRegex.test(from.comfirm)) {
+      newErrors.confirm = null;
+    } else {
+      newErrors.confirm = "wrong comfirm password";
+    }
+
+    setErrors({ ...errors, ...newErrors });
+  }, [from.comfirm]);
   const handleonclick2 = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const newErrors = {};
@@ -43,12 +94,17 @@ export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
       !newErrors.confirm &&
       !newErrors.phone
     ) {
+      localStorage.setItem("My-form", JSON.stringify(from));
       setStep("Page3");
     }
   };
   return (
-    <div>
-      <div className="w-[480px] h-[655px] bg-[#FFF] flex flex-col justify-between p-[32px] items-start rounded-[8xp]">
+    <motion.div
+      className="relative"
+      initial={{ opacity: 0, right: -30 }}
+      animate={{ opacity: 1, right: 0, transition: { duration: 1 } }}
+    >
+      <div className="w-[480px] h-[655px] bg-[#FFF] flex flex-col justify-between p-[32px] items-start rounded-2xl">
         <header>
           <img className="" src="pinecone-logo.png"></img>
           <br></br>
@@ -70,7 +126,9 @@ export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
                   email: e.target.value,
                 })
               }
-              className="w-[392px] h-[40px] flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black"
+              className={`w-104 h-11 flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black + ${
+                errors.email ? "border-red-500" : ""
+              }`}
             ></input>
 
             {!setErrors.email && (
@@ -88,7 +146,9 @@ export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
                 })
               }
               value={from.phone}
-              className="w-[392px] h-[40px] flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black"
+              className={`w-104 h-11 flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black + ${
+                errors.phone ? "border-red-500" : ""
+              }`}
             ></input>
 
             {errors.phone && <div className="text-red-500">{errors.phone}</div>}
@@ -105,7 +165,9 @@ export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
                 })
               }
               value={from.password}
-              className="w-[392px] h-[40px] flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black"
+              className={`w-104 h-11 flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black + ${
+                errors.password ? "border-red-500" : ""
+              }`}
             ></input>
             {!setErrors.password && (
               <div className="text-red-500">{errors.password}</div>
@@ -122,7 +184,9 @@ export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
                 })
               }
               value={from.confirm}
-              className="w-[392px] h-[40px] flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black"
+              className={`w-104 h-11 flex p-[12px] items-center rounded-[8px] border-[#8B8E95] border-2 text-black + ${
+                errors.confirm ? "border-red-500" : ""
+              }`}
             ></input>
             {!setErrors.confirm && (
               <div className="text-red-500">{errors.confirm}</div>
@@ -136,16 +200,16 @@ export const Pagetwo = ({ from, setFrom, errors, setStep, setErrors }) => {
             }}
             className=" w-[142px] h-[40px] bg-white text-black rounded-[6px] border-1"
           >
-            Back
+            {"<"}Back
           </button>
           <button
             className=" w-[272px] h-[40px] bg-[#121316] text-white rounded-[6px]"
             onClick={handleonclick2}
           >
-            Continue 2/3
+            Continue 2/3{">"}
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

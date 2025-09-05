@@ -1,26 +1,32 @@
 "use client";
-
+import { motion } from "motion/react";
 import { useState } from "react";
 import { Pageone, Pagetwo, Pagethree } from "@/components";
 
 export default function Home() {
   const [step, setStep] = useState("Page1");
   const [errors, setErrors] = useState({});
-  const [from, setFrom] = useState({
-    firstname: "",
-    Lastname: "",
-    Username: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirm: "",
-    date: "",
-    image: "",
-  });
+  const localform = localStorage.getItem("My-form");
+  const myform = JSON.parse(localform);
+  const [from, setFrom] = useState(
+    localform
+      ? myform
+      : {
+          firstname: "",
+          Lastname: "",
+          Username: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirm: "",
+          date: "",
+          image: "",
+        }
+  );
 
   if (step === "Page1") {
     return (
-      <div>
+      <div className="flex justify-center mt-50">
         <Pageone
           from={from}
           setFrom={setFrom}
@@ -34,7 +40,7 @@ export default function Home() {
   }
   if (step === "Page2") {
     return (
-      <div>
+      <div className="flex justify-center mt-50">
         <Pagetwo
           from={from}
           setFrom={setFrom}
@@ -47,7 +53,7 @@ export default function Home() {
   }
   if (step === "Page3") {
     return (
-      <div>
+      <div className="flex justify-center mt-50">
         <Pagethree
           from={from}
           setFrom={setFrom}
@@ -59,8 +65,12 @@ export default function Home() {
   }
   if (step === "Page4") {
     return (
-      <div>
-        <div className="w-[480px] h-[655px] bg-[#FFF] flex flex-col justify-between p-[32px] items-start rounded-[8xp]">
+      <motion.div
+        className="flex justify-center mt-50 relative"
+        initial={{ opacity: 0, right: -30 }}
+        animate={{ opacity: 1, right: 0, transition: { duration: 1 } }}
+      >
+        <div className="w-[430px] h-[220px] bg-[#FFF] flex flex-col justify-between p-[32px] items-start rounded-2xl rounded-b-xl">
           <header>
             <img className="" src="pinecone-logo.png"></img>
             <br></br>
@@ -73,7 +83,7 @@ export default function Home() {
             </h3>
           </header>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
